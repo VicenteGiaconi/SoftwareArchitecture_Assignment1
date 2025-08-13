@@ -1,0 +1,42 @@
+<%= form_with(model: review, local: true) do |form| %>
+
+    <%= params %>
+
+    <% if review.errors.any? %>
+        <div id="error_explanation" class="alert alert-danger">
+            <h2><%= pluralize(review.errors.count, "error") %> prevented this review from being saved:</h2>
+            <ul>
+                <% review.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                <% end %>
+            </ul>
+        </div>
+    <% end %>
+
+    <% if params[:book_id] %>
+        <%= form.hidden_field :book_id, value: params[:book_id] %>
+    <% else %>
+        <% if !@edit %>
+            <div class="mb-3">
+                <%= form.label :book_id, "Book", class: 'form-label' %>
+                <%= form.select :book_id, options_for_select(@books.map { |b| [b.name, b.id] }, review.book_id), { prompt: 'Select Book' }, { class: 'form-select' } %>
+            </div>
+        <% end %>   
+    <% end %>
+
+    <div class="mb-3">
+        <%= form.label :content, class: 'form-label' %>
+        <%= form.text_area :review, class: 'form-control', rows: 5 %>
+    </div>
+
+    <div class="mb-3">
+        <%= form.label :rating, class: 'form-label' %>
+        <%= form.number_field :score, in: 1..5, class: 'form-control' %>
+    </div>
+
+    <div class="d-grid gap-2">
+        <%= form.submit 'Save Changes', class: 'btn btn-primary' %>
+        <%= link_to 'Back', reviews_path, class: 'btn btn-secondary' %>
+    </div>
+<% end %>
+
