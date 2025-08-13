@@ -2,7 +2,8 @@ class ReviewsController < ApplicationController
     before_action :set_review, only: [:show, :edit, :update, :destroy]
 
     def index
-        @reviews = Review.all
+        # @reviews = Review.all
+        @reviews = Review.page(params[:page]).per(15)
     end
 
     def show
