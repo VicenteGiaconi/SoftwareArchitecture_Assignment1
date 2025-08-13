@@ -1,7 +1,5 @@
 <%= form_with(model: review, local: true) do |form| %>
 
-    <%= params %>
-
     <% if review.errors.any? %>
         <div id="error_explanation" class="alert alert-danger">
             <h2><%= pluralize(review.errors.count, "error") %> prevented this review from being saved:</h2>
