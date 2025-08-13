@@ -14,7 +14,7 @@ class AuthorsController < ApplicationController
                                  'COALESCE(SUM(sales.sales), 0) AS total_sales'
                                )
     
-    @authors = authors_with_stats.order("#{@sort_column} #{@sort_direction}")
+    @authors = authors_with_stats.order("#{@sort_column} #{@sort_direction}").page(params[:page]).per(15)
   end
 
   def show
