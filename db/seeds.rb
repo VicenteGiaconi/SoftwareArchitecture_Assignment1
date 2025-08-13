@@ -29,7 +29,7 @@ end
 
 # books
 books = []
-200.times do
+300.times do
   books << Book.create(
     name: Faker::Book.title,
     summary: Faker::Lorem.paragraph(sentence_count: 5),
@@ -39,14 +39,15 @@ books = []
   )
 end
 
-# reviews
-1000.times do
-  Review.create(
-    review: Faker::Lorem.paragraph(sentence_count: 3),
-    score: Faker::Number.between(from: 1, to: 5),
-    number_of_up_votes: Faker::Number.between(from: 0, to: 100),
-    book: books.sample
-  )
+books.each do |book|
+  10.times do
+    Review.create(
+      review: Faker::Lorem.paragraph(sentence_count: 3),
+      score: Faker::Number.between(from: 1, to: 5),
+      number_of_up_votes: Faker::Number.between(from: 0, to: 100),
+      book: book
+    )
+  end
 end
 
 # sales

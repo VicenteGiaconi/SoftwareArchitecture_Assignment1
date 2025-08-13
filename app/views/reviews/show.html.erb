@@ -1,0 +1,15 @@
+<div class="container my-5">
+  <h1 class="mb-4"><%= @review.book.name %></h1>
+
+  <div class="card mb-3">
+    <div class="card-body">
+      <h5 class="card-title">Book: <%= @review.book.name if @review.book %></h5>
+      <p class="card-text"><strong>Review:</strong> <%= @review.review %></p>
+      <p class="card-text"><strong>Score:</strong> <%= @review.score %></p>
+      <p class="card-text"><strong>Up votes:</strong> <%= @review.number_of_up_votes %></p>
+    </div>
+  </div>
+
+  <%= link_to 'Edit', edit_review_path(@review), class: 'btn btn-warning' %>
+  <%= link_to 'Back', reviews_path, class: 'btn btn-secondary' %>
+</div>
