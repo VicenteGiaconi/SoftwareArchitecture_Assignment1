@@ -11,6 +11,8 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root "books#index"
+  get 'books/top10', to: 'books#top10'
+  get 'books/top50_sales', to: 'books#top50_sales'
 
   resources :authors
   resources :books

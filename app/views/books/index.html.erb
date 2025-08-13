@@ -22,7 +22,7 @@
           <td><%= number_with_delimiter(book.number_of_sales) %></td>
           <td><%= link_to 'Show', book, class: 'btn btn-info btn-sm' %></td>
           <td><%= link_to 'Edit', edit_book_path(book), class: 'btn btn-warning btn-sm' %></td>
-          <td><%= link_to 'Delete', book, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %></td>
+          <td><%= button_to 'Delete', book, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %></td>
         </tr>
       <% end %>
     </tbody>

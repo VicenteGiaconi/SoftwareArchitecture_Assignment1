@@ -22,7 +22,9 @@
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
 
+  <!-- filepath: /home/cito/Escritorio/SoftwareArchitecture_Assignment1/app/views/layouts/application.html.erb -->
   <body>
+    <%= render 'shared/navbar' %>
     <%= yield %>
   </body>
 </html>

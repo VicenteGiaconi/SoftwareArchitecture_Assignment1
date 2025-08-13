@@ -1,0 +1,37 @@
+<div class="container my-5">
+  <h1 class="mb-4">Top 10 Rated Books</h1>
+  <table class="table table-striped table-hover">
+    <thead class="table-dark">
+      <tr>
+        <th></th>
+        <th>Title</th>
+        <th>Highest Rated Review</th>
+        <th>Lowest Rated Review</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @top_books.each_with_index do |book, idx| %>
+        <tr>
+          <td><%= idx + 1 %></td>
+          <td><%= book.name %></td>
+          <td>
+            <% if book.reviews.any? %>
+              <% best = book.reviews.order(score: :desc).first %>
+              <strong><%= best.score %>★</strong>: <%= truncate(best.review, length: 50) %>
+            <% else %>
+              No reviews
+            <% end %>
+          </td>
+          <td>
+            <% if book.reviews.any? %>
+              <% worst = book.reviews.order(score: :asc).first %>
+              <strong><%= worst.score %>★</strong>: <%= truncate(worst.review, length: 50) %>
+            <% else %>
+              No reviews
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

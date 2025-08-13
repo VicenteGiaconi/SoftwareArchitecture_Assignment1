@@ -41,6 +41,41 @@ class BooksController < ApplicationController
     redirect_to books_url, notice: 'El libro fue eliminado exitosamente.'
   end
 
+  def top10
+    @top_books = Book
+      .left_joins(:reviews)
+      .group('books.id')
+      .order('AVG(reviews.score) DESC NULLS LAST')
+      .limit(10)
+      .includes(:reviews)
+  end
+
+  def top50_sales
+    @top_books = Book
+      .left_joins(:sales)
+      .select('books.*, COALESCE(SUM(sales.sales), 0) AS total_book_sales')
+      .group('books.id')
+      .order('total_book_sales DESC')
+      .limit(50)
+      .includes(:author, :sales)
+
+    author_sales = Sale.group(:book_id).sum(:sales)
+    @author_totals =
+      Book.joins(:sales)
+          .group(:author_id)
+          .sum('sales.sales')
+
+    @top5_by_year = {}
+    Sale.select(:year).distinct.each do |sale|
+      @top5_by_year[sale.year] = Sale.where(year: sale.year)
+                                    .group(:book_id)
+                                    .sum(:sales)
+                                    .sort_by { |_, v| -v }
+                                    .first(5)
+                                    .map(&:first)
+    end
+  end
+
   private
     def set_book
       @book = Book.find(params[:id])

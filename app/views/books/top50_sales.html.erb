@@ -1,0 +1,38 @@
+<div class="container my-5">
+  <h1 class="mb-4">Top 50 Selling Books of All Time</h1>
+  <table class="table table-striped table-hover">
+    <thead class="table-dark">
+      <tr>
+        <th>#</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Year</th>
+        <th>Total Book Sales</th>
+        <th>Total Author Sales</th>
+        <th>Top 5 in Year?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @top_books.each_with_index do |book, idx| %>
+        <tr>
+          <td><%= idx + 1 %></td>
+          <td><%= book.name %></td>
+          <td><%= book.author&.name %></td>
+          <td><%= book.date_of_publication&.year %></td>
+          <td><%= number_with_delimiter(book.total_book_sales.to_i) %></td>
+          <td>
+            <%= number_with_delimiter((author_total = (defined?(author_totals) ? author_totals : @author_totals)[book.author_id]) || 0) %>
+          </td>
+          <td>
+            <% year = book.date_of_publication&.year %>
+            <% if year && @top5_by_year[year]&.include?(book.id) %>
+              <span class="badge bg-success">Yes</span>
+            <% else %>
+              <span class="badge bg-secondary">No</span>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

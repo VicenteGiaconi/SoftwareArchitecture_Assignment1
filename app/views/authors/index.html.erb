@@ -28,7 +28,7 @@
           <td><%= number_with_delimiter(author.total_sales) %></td>
           <td><%= link_to 'Show', author, class: 'btn btn-info btn-sm' %></td>
           <td><%= link_to 'Edit', edit_author_path(author), class: 'btn btn-warning btn-sm' %></td>
-          <td><%= link_to 'Delete', author, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %></td>
+          <td><%= button_to 'Delete', author, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %></td>
         </tr>
       <% end %>
     </tbody>
