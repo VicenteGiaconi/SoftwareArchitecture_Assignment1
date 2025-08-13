@@ -1,0 +1,16 @@
+<div class="container my-5">
+  <h1 class="mb-4"><%= @book.name %></h1>
+
+  <div class="card mb-3">
+    <div class="card-body">
+      <h5 class="card-title">Author: <%= @book.author.name if @book.author %></h5>
+      <p class="card-text"><strong>Summary:</strong> <%= @book.summary %></p>
+      <p class="card-text"><strong>Published date:</strong> <%= @book.date_of_publication %></p>
+      <p class="card-text"><strong>Total sales:</strong> <%= number_with_delimiter(@book.number_of_sales) %></p>
+    </div>
+  </div>
+
+  <%= link_to 'Edit', edit_book_path(@book), class: 'btn btn-warning' %>
+  <%= link_to 'Review', new_review_path(book_id: @book.id), class: 'btn btn-primary' %>
+  <%= link_to 'Back', books_path, class: 'btn btn-secondary' %>
+</div>

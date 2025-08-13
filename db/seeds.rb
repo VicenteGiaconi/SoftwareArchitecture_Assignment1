@@ -7,3 +7,58 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
+require 'faker'
+Review.destroy_all
+Sale.destroy_all
+Book.destroy_all
+Author.destroy_all
+
+Faker::Config.locale = 'es'
+
+# authors
+authors = []
+50.times do
+  authors << Author.create(
+    name: Faker::Book.author,
+    date_of_birth: Faker::Date.birthday(min_age: 10, max_age: 100),
+    country_of_origin: Faker::Address.country,
+    short_description: Faker::Lorem.paragraph(sentence_count: 2)
+  )
+end
+
+# books
+books = []
+300.times do
+  books << Book.create(
+    name: Faker::Book.title,
+    summary: Faker::Lorem.paragraph(sentence_count: 5),
+    date_of_publication: Faker::Date.between(from: '1900-01-01', to: '2024-01-01'),
+    number_of_sales: Faker::Number.between(from: 1000, to: 5000000),
+    author: authors.sample 
+  )
+end
+
+books.each do |book|
+  10.times do
+    Review.create(
+      review: Faker::Lorem.paragraph(sentence_count: 3),
+      score: Faker::Number.between(from: 1, to: 5),
+      number_of_up_votes: Faker::Number.between(from: 0, to: 100),
+      book: book
+    )
+  end
+end
+
+# sales
+books.each do |book|
+  Faker::Number.between(from: 1, to: 2).times do
+    Sale.create(
+      year: Faker::Number.between(from: 2020, to: 2024),
+      sales: Faker::Number.between(from: 100, to: 500000),
+      book: book
+    )
+  end
+end
+
+puts "finished"

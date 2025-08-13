@@ -1,0 +1,38 @@
+<div class="container my-5">
+  <h1 class="mb-4">Author List</h1>
+
+  <table class="table table-striped table-hover">
+    <thead class="table-dark">
+      <tr>
+        <th>
+          <%= sortable "name", "Author" %>
+        </th>
+        <th>
+          <%= sortable "books_count", "Published Books" %>
+        </th>
+        <th>
+          <%= sortable "average_score", "Average Score" %>
+        </th>
+        <th>
+          <%= sortable "total_sales", "Total Sales" %>
+        </th>
+        <th colspan="3">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @authors.each do |author| %>
+        <tr>
+          <td><%= author.name %></td>
+          <td><%= author.books_count %></td>
+          <td><%= number_to_human(author.average_score, precision: 2) if author.average_score %></td>
+          <td><%= number_with_delimiter(author.total_sales) %></td>
+          <td><%= link_to 'Show', author, class: 'btn btn-info btn-sm' %></td>
+          <td><%= link_to 'Edit', edit_author_path(author), class: 'btn btn-warning btn-sm' %></td>
+          <td><%= button_to 'Delete', author, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <%= link_to 'New Author', new_author_path, class: 'btn btn-primary mt-3' %>
+</div>
