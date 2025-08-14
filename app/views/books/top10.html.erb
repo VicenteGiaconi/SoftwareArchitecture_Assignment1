@@ -5,6 +5,7 @@
       <tr>
         <th></th>
         <th>Title</th>
+        <th>Most popular review</th>
         <th>Highest Rated Review</th>
         <th>Lowest Rated Review</th>
       </tr>
@@ -14,6 +15,14 @@
         <tr>
           <td><%= idx + 1 %></td>
           <td><%= book.name %></td>
+          <td>
+            <% if book.reviews.any? %>
+              <% most_popular = book.reviews.order(number_of_up_votes: :desc).first %>
+              <%= truncate(most_popular.review, length: 50) %><strong>|<%= most_popular.number_of_up_votes %>♥</strong>
+            <% else %>
+              No reviews
+            <% end %>
+          </td>
           <td>
             <% if book.reviews.any? %>
               <% best = book.reviews.order(score: :desc).first %>

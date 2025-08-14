@@ -8,6 +8,8 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
+puts "Cleaning up database..."
+
 require 'faker'
 Review.destroy_all
 Sale.destroy_all
@@ -15,6 +17,8 @@ Book.destroy_all
 Author.destroy_all
 
 Faker::Config.locale = 'es'
+
+puts "Creating Authors..."
 
 # authors
 authors = []
@@ -26,6 +30,8 @@ authors = []
     short_description: Faker::Lorem.paragraph(sentence_count: 2)
   )
 end
+
+puts "Creating Books..."
 
 # books
 books = []
@@ -39,6 +45,8 @@ books = []
   )
 end
 
+puts "Creating Reviews..."
+
 books.each do |book|
   10.times do
     Review.create(
@@ -50,15 +58,19 @@ books.each do |book|
   end
 end
 
+puts "Creating Sales..."
+
 # sales
 books.each do |book|
-  Faker::Number.between(from: 1, to: 2).times do
+  pub_year = book.date_of_publication.year
+  current_year = 2024
+  (pub_year..current_year).each do |year|
     Sale.create(
-      year: Faker::Number.between(from: 2020, to: 2024),
-      sales: Faker::Number.between(from: 100, to: 500000),
+      year: year,
+      sales: Faker::Number.between(from: 100, to: 500_000),
       book: book
     )
   end
 end
 
-puts "finished"
+puts "Done"
