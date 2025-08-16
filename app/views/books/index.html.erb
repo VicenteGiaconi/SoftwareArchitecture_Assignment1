@@ -3,6 +3,13 @@
 
   <%= link_to 'New Book', new_book_path, class: 'btn btn-primary mt-3' %>
 
+  <%= form_with url: books_path, method: :get, local: true, class: "mb-4" do %>
+    <div class="input-group">
+      <%= text_field_tag :q, params[:q], class: "form-control", placeholder: "Search by description..." %>
+      <button class="btn btn-primary" type="submit">Search</button>
+    </div>
+  <% end %>
+
   <table class="table table-striped table-hover">
     <thead class="table-dark">
       <tr>

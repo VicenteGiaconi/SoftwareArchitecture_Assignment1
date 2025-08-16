@@ -2,7 +2,14 @@ class BooksController < ApplicationController
   before_action :set_book, only: [:show, :edit, :update, :destroy]
 
   def index
-    @books = Book.page(params[:page]).per(15)
+    if params[:q].present?
+      words = params[:q].split
+      query = words.map { |w| "summary ILIKE ?" }.join(" OR ")
+      values = words.map { |w| "%#{w}%" }
+      @books = Book.where(query, *values).page(params[:page]).per(15)
+    else
+      @books = Book.page(params[:page]).per(15)
+    end
   end
 
   def show
