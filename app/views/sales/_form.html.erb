@@ -1,0 +1,32 @@
+<%= form_with(model: sale, local: true) do |form| %>
+  <% if sale.errors.any? %>
+    <div id="error_explanation" class="alert alert-danger">
+      <h2><%= pluralize(sale.errors.count, "error") %> prevented to save changes:</h2>
+      <ul>
+        <% sale.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= form.label :book_id, "Book", class: 'form-label' %>
+    <%= form.select :book_id, options_for_select(@books.map { |b| [b.name, b.id] }, sale.book_id), { prompt: 'Select Book' }, { class: 'form-select' } %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :year, "Year", class: 'form-label' %>
+    <%= form.number_field :year, class: 'form-control' %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :sales, "Sales", class: 'form-label' %>
+    <%= form.number_field :sales, class: 'form-control' %>
+  </div>
+
+  <div class="d-grid gap-2">
+    <%= form.submit 'Save Changes', class: 'btn btn-primary' %>
+    <%= link_to 'Back', books_path, class: 'btn btn-secondary' %>
+  </div>
+<% end %>

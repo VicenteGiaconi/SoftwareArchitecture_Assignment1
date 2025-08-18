@@ -8,7 +8,7 @@ class AuthorsController < ApplicationController
     authors_with_stats = Author.left_joins(books: [:reviews, :sales])
                                .group('authors.id')
                                .select(
-                                 'authors.*', # Selecciona todos los campos del autor
+                                 'authors.*',
                                  'COUNT(books.id) AS books_count',
                                  'AVG(reviews.score) AS average_score',
                                  'COALESCE(SUM(sales.sales), 0) AS total_sales'
@@ -30,7 +30,7 @@ class AuthorsController < ApplicationController
   def create
     @author = Author.new(author_params)
     if @author.save
-      redirect_to @author, notice: 'El autor fue creado exitosamente.'
+      redirect_to @author, notice: 'The authos was created succesfuly.'
     else
       render :new
     end
@@ -38,7 +38,7 @@ class AuthorsController < ApplicationController
 
   def update
     if @author.update(author_params)
-      redirect_to @author, notice: 'El autor fue actualizado exitosamente.'
+      redirect_to @author, notice: 'The author was updated succesfully.'
     else
       render :edit
     end
@@ -46,7 +46,7 @@ class AuthorsController < ApplicationController
 
   def destroy
     @author.destroy
-    redirect_to authors_url, notice: 'El autor fue eliminado exitosamente.'
+    redirect_to authors_url, notice: 'The author was deleted succesfuly.'
   end
 
   private
