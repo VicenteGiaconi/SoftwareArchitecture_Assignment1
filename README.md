@@ -40,6 +40,9 @@ bin/rails db:setup
 bin/rails server
 ```
 
+### NOTE: Filters for Authors Table
+The filters implemented in the authors table is not very visible. By clicking the header of each of the columns the data is filtered accordingly.
+
 ## Docker environment
 
 - If using docker, you just need to execute de following commands:
@@ -51,3 +54,4 @@ docker-compose up
 ```bash
 docker-compose down -v
 ```
+
