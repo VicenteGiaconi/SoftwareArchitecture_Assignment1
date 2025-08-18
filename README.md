@@ -1,24 +1,53 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Developers
 
-Things you may want to cover:
+- Freddy Bacigalupo
+- Vicente Giaconi
+- Ignacio Liberón
 
-* Ruby version
+## Ruby version
 
-* System dependencies
+- This project uses Ruby 3.4.5 and Rails 8.0.2 (https://guides.rubyonrails.org/install_ruby_on_rails.html).
 
-* Configuration
 
-* Database creation
+## Local environment
 
-* Database initialization
 
-* How to run the test suite
+### System dependencies
 
-* Services (job queues, cache servers, search engines, etc.)
+- To install all the required dependencies, execute:
 
-* Deployment instructions
+```bash
+bundle install
+yarn install
+```
 
-* ...
+### Database creation
+
+- You need the PostgreSQL database engine. If you don't have it installed on your machine, follow the steps of the official documentation (https://www.postgresql.org/download/).
+
+- To initialize the database, run the next command:
+
+```bash
+bin/rails db:setup
+```
+
+### Running the application
+
+- To run the application, execute this command:
+```bash
+bin/rails server
+```
+
+## Docker environment
+
+- If using docker, you just need to execute de following commands:
+```bash
+docker-compose run web rake db:setup
+docker-compose up
+```
+- To take down the containers, execute:
+```bash
+docker-compose down -v
+```
