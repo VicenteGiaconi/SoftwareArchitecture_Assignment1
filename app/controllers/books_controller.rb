@@ -27,7 +27,7 @@ class BooksController < ApplicationController
   def create
     @book = Book.new(book_params)
     if @book.save
-      redirect_to @book, notice: 'El libro fue creado exitosamente.'
+      redirect_to @book, notice: 'The book was created succesfuly.'
     else
       @authors = Author.all 
       render :new
@@ -36,7 +36,7 @@ class BooksController < ApplicationController
 
   def update
     if @book.update(book_params)
-      redirect_to @book, notice: 'El libro fue actualizado exitosamente.'
+      redirect_to @book, notice: 'The book was updated succesfuly.'
     else
       @authors = Author.all 
       render :edit
@@ -45,7 +45,7 @@ class BooksController < ApplicationController
 
   def destroy
     @book.destroy
-    redirect_to books_url, notice: 'El libro fue eliminado exitosamente.'
+    redirect_to books_url, notice: 'The book was deleted succesfuly.'
   end
 
   def top10
