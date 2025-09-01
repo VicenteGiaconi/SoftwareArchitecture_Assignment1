@@ -11,30 +11,30 @@
       </tr>
     </thead>
     <tbody>
-      <% @top_books.each_with_index do |book, idx| %>
+      <% @top_books.each_with_index do |item, idx| %>
+        <% book = item[:book] %>
+        <% highest_rated_review = item[:highest_rated_review] %>
+        <% lowest_rated_review = item[:lowest_rated_review] %>
         <tr>
           <td><%= idx + 1 %></td>
           <td><%= book.name %></td>
           <td>
-            <% if book.reviews.any? %>
-              <% most_popular = book.reviews.order(number_of_up_votes: :desc).first %>
-              <%= truncate(most_popular.review, length: 50) %><strong>|<%= most_popular.number_of_up_votes %>♥</strong>
+            <% if highest_rated_review.present? %>
+              <%= truncate(highest_rated_review.review, length: 50) %><strong>|<%= highest_rated_review.number_of_up_votes %>♥</strong>
             <% else %>
               No reviews
             <% end %>
           </td>
           <td>
-            <% if book.reviews.any? %>
-              <% best = book.reviews.order(score: :desc).first %>
-              <strong><%= best.score %>★</strong>: <%= truncate(best.review, length: 50) %>
+            <% if highest_rated_review.present? %>
+              <strong><%= highest_rated_review.score %>★</strong>: <%= truncate(highest_rated_review.review, length: 50) %>
             <% else %>
               No reviews
             <% end %>
           </td>
           <td>
-            <% if book.reviews.any? %>
-              <% worst = book.reviews.order(score: :asc).first %>
-              <strong><%= worst.score %>★</strong>: <%= truncate(worst.review, length: 50) %>
+            <% if lowest_rated_review.present? %>
+              <strong><%= lowest_rated_review.score %>★</strong>: <%= truncate(lowest_rated_review.review, length: 50) %>
             <% else %>
               No reviews
             <% end %>

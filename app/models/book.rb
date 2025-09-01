@@ -4,5 +4,11 @@ class Book < ApplicationRecord
   has_many :reviews, dependent: :destroy
   has_many :sales, dependent: :destroy
   
-  #validations
+  after_save :clear_caches
+  after_destroy :clear_caches
+
+  def clear_caches
+    Rails.cache.delete('top_10_rated_books_with_reviews')
+    Rails.cache.delete('top_50_sales_with_details')
+  end
 end

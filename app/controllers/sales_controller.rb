@@ -2,7 +2,12 @@ class SalesController < ApplicationController
     before_action :set_review, only: [:show, :edit, :update, :destroy]
 
     def index
-        @sales = Sale.page(params[:page]).per(15)
+        cache_key = 'sales_index'
+        all_sales = Rails.cache.fetch(cache_key, expires_in: 1.hour) do
+            Sale.all.to_a
+        end
+        
+        @sales = Kaminari.paginate_array(all_sales).page(params[:page]).per(15)
     end
 
     def show

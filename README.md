@@ -47,9 +47,10 @@ The filters implemented in the authors table is not very visible. By clicking th
 
 - If using docker, you just need to execute de following commands:
 ```bash
-docker-compose run web rake db:setup
-docker-compose up
+docker-compose up -d
+docker-compose exec web rake db:setup
 ```
+- Then search on your browser "http://localhost:3000/"
 - To take down the containers, execute:
 ```bash
 docker-compose down -v

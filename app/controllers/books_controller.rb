@@ -49,22 +49,39 @@ class BooksController < ApplicationController
   end
 
   def top10
-    @top_books = Book
-      .left_joins(:reviews)
-      .group('books.id')
-      .order('AVG(reviews.score) DESC NULLS LAST')
-      .limit(10)
-      .includes(:reviews)
+    cache_key = 'top_10_rated_books_with_reviews'
+    @top_books = Rails.cache.fetch(cache_key, expires_in: 1.hour) do
+      books = Book
+        .left_joins(:reviews)
+        .group('books.id')
+        .order('AVG(reviews.score) DESC NULLS LAST')
+        .limit(10)
+        .includes(:reviews)
+
+      # Obtiene las reseñas más votadas para cada libro
+      books.map do |book|
+        highest_rated_review = book.reviews.order(score: :desc, number_of_up_votes: :desc).first
+        lowest_rated_review = book.reviews.order(score: :asc, number_of_up_votes: :desc).first
+        
+        {
+          book: book,
+          highest_rated_review: highest_rated_review,
+          lowest_rated_review: lowest_rated_review
+        }
+      end
+    end
   end
 
   def top50_sales
-    @top_books = Book
-      .left_joins(:sales)
-      .select('books.*, COALESCE(SUM(sales.sales), 0) AS total_book_sales')
-      .group('books.id')
-      .order('total_book_sales DESC')
-      .limit(50)
-      .includes(:author, :sales)
+    cache_key = 'top_50_sales_with_details'
+    @top_books = Rails.cache.fetch(cache_key, expires_in: 1.hour) do
+      Book.left_joins(:sales)
+          .select('books.*, COALESCE(SUM(sales.sales), 0) AS total_book_sales')
+          .group('books.id')
+          .order('total_book_sales DESC')
+          .limit(50)
+          .includes(:author, :sales)
+    end
 
     author_sales = Sale.group(:book_id).sum(:sales)
     @author_totals =
