@@ -2,7 +2,12 @@ class ReviewsController < ApplicationController
     before_action :set_review, only: [:show, :edit, :update, :destroy]
 
     def index
-        @reviews = Review.page(params[:page]).per(15)
+        cache_key = 'reviews_index'
+        all_reviews = Rails.cache.fetch(cache_key, expires_in: 1.hour) do
+            Review.all.to_a
+        end
+        
+        @reviews = Kaminari.paginate_array(all_reviews).page(params[:page]).per(15)
     end
 
     def show

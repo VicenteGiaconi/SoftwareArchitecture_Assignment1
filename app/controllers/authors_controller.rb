@@ -4,17 +4,19 @@ class AuthorsController < ApplicationController
   def index
     @sort_column = params[:sort] || 'name'
     @sort_direction = params[:direction] == 'asc' ? 'asc' : 'desc'
+    cache_key = "authors_index_#{@sort_column}_#{@sort_direction}"
 
-    authors_with_stats = Author.left_joins(books: [:reviews, :sales])
-                               .group('authors.id')
-                               .select(
-                                 'authors.*',
-                                 'COUNT(books.id) AS books_count',
-                                 'AVG(reviews.score) AS average_score',
-                                 'COALESCE(SUM(sales.sales), 0) AS total_sales'
-                               )
-    
-    @authors = authors_with_stats.order("#{@sort_column} #{@sort_direction}").page(params[:page]).per(15)
+    @authors = Rails.cache.fetch(cache_key, expires_in: 1.hour) do
+      Author.left_joins(books: [:reviews, :sales])
+            .group('authors.id')
+            .select(
+              'authors.*',
+              'COUNT(books.id) AS books_count',
+              'AVG(reviews.score) AS average_score',
+              'COALESCE(SUM(sales.sales), 0) AS total_sales'
+            )
+            .order("#{@sort_column} #{@sort_direction}")
+    end.page(params[:page]).per(15)
   end
 
   def show
