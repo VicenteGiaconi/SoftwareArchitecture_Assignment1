@@ -1,6 +1,12 @@
 <div class="container my-5">
   <h1 class="mb-4"><%= @book.name %></h1>
 
+  <% if @book.cover_image.attached? %>
+    <div class="mb-3">
+      <%= image_tag @book.cover_image, class: "img-thumbnail" %>
+    </div>
+  <% end %>
+
   <div class="card mb-3">
     <div class="card-body">
       <h5 class="card-title">Author: <%= @book.author.name if @book.author %></h5>

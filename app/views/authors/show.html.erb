@@ -1,5 +1,11 @@
 <div class="container my-5">
-  <h1 class="mb-4">Author Details: <%= @author.name %></h1>
+  <h1 class="mb-4"><%= @author.name %></h1>
+
+  <% if @author.photo.attached? %>
+    <div class="mb-3">
+      <%= image_tag @author.photo, class: "img-thumbnail" %>
+    </div>
+  <% end %>
 
   <div class="card mb-3">
     <div class="card-body">
