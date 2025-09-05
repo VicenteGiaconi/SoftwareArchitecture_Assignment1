@@ -1,4 +1,4 @@
-<%= form_with(model: author, local: true) do |form| %>
+<%= form_with(model: author, local: true, html: { multipart: true }) do |form| %>
   <% if author.errors.any? %>
     <div id="error_explanation" class="alert alert-danger">
       <h2><%= pluralize(author.errors.count, "error") %> prevented from saving changes:</h2>
@@ -28,6 +28,16 @@
   <div class="mb-3">
     <%= form.label :short_description, "Description", class: 'form-label' %>
     <%= form.text_area :short_description, class: 'form-control', rows: 5 %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :photo, "Photo", class: 'form-label' %>
+    <%= form.file_field :photo, class: 'form-control' %>
+    <% if author.photo.attached? %>
+      <div class="mt-2">
+        <%= image_tag author.photo, class: "img-thumbnail" %>
+      </div>
+    <% end %>
   </div>
 
   <div class="d-grid gap-2">

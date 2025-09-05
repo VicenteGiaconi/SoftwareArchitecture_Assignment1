@@ -1,4 +1,6 @@
 class Book < ApplicationRecord
+  has_one_attached :cover_image
+
   belongs_to :author
   # according to the instructions.
   has_many :reviews, dependent: :destroy
