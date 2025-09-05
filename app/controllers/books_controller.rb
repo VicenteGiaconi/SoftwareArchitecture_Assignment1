@@ -2,15 +2,19 @@ class BooksController < ApplicationController
   before_action :set_book, only: [:show, :edit, :update, :destroy]
 
   def index
-    if params[:q].present?
+  if params[:q].present?
+    if Book.respond_to?(:search)
+      @books = Book.search(params[:q], page: params[:page], per_page: 15)
+    else
       words = params[:q].split
       query = words.map { |w| "summary ILIKE ?" }.join(" OR ")
       values = words.map { |w| "%#{w}%" }
       @books = Book.where(query, *values).page(params[:page]).per(15)
-    else
-      @books = Book.page(params[:page]).per(15)
     end
+  else
+    @books = Book.page(params[:page]).per(15)
   end
+end
 
   def show
   end
