@@ -8,7 +8,7 @@ class Book < ApplicationRecord
   after_destroy :clear_caches
 
   def clear_caches
-    Rails.cache.delete('top_10_rated_books_with_reviews')
-    Rails.cache.delete('top_50_sales_with_details')
+    Rails.cache.delete('top_10_rated_books_with_reviews') rescue nil
+    Rails.cache.delete('top_50_sales_with_details') rescue nil
   end
 end

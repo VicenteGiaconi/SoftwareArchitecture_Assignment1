@@ -5,6 +5,6 @@ class Review < ApplicationRecord
   after_destroy :clear_review_cache
 
   def clear_review_cache
-    Rails.cache.delete('reviews_index')
+    Rails.cache.delete('reviews_index') rescue nil
   end
 end

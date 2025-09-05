@@ -6,6 +6,6 @@ class Author < ApplicationRecord
   after_destroy :clear_author_cache
 
   def clear_author_cache
-    Rails.cache.delete_matched("authors_index_*")
+    Rails.cache.delete_matched("authors_index_*") rescue nil
   end
 end

@@ -5,6 +5,6 @@ class Sale < ApplicationRecord
   after_destroy :clear_sales_cache
 
   def clear_sales_cache
-    Rails.cache.delete('sales_index')
+    Rails.cache.delete('sales_index') rescue nil
   end
 end
