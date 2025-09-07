@@ -45,11 +45,18 @@ The filters implemented in the authors table is not very visible. By clicking th
 
 ## Docker environment
 
-- If using docker, you just need to execute de following commands:
+### Only Database Container
 ```bash
-docker-compose up -d
-docker-compose exec web rake db:setup
+docker-compose run web rake db:setup
+docker-compose up
 ```
+
+### Database + Cache Container
+```bash
+docker-compose -f docker-compose-cache.yml up --build -d
+docker-compose -f docker-compose-cache.yml exec web rake db:setup
+```
+
 - Then search on your browser "http://localhost:3000/"
 - To take down the containers, execute:
 ```bash
