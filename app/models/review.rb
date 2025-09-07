@@ -1,4 +1,5 @@
 class Review < ApplicationRecord
+  searchkick
   belongs_to :book
   
 	after_save :clear_review_cache
@@ -6,5 +7,11 @@ class Review < ApplicationRecord
 
   def clear_review_cache
     Rails.cache.delete('reviews_index') rescue nil
+
+  def search_data
+    {
+      review: review,
+      score: score
+    }
   end
 end
