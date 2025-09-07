@@ -1,6 +1,7 @@
 class Book < ApplicationRecord
   has_one_attached :cover_image
 
+  searchkick
   belongs_to :author
   # according to the instructions.
   has_many :reviews, dependent: :destroy
@@ -12,5 +13,12 @@ class Book < ApplicationRecord
   def clear_caches
     Rails.cache.delete('top_10_rated_books_with_reviews')
     Rails.cache.delete('top_50_sales_with_details')
+  #validations
+
+  def search_data
+    {
+      name: name,
+      summary: summary
+    }
   end
 end
