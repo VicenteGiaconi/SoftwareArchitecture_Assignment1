@@ -13,6 +13,7 @@ class Book < ApplicationRecord
   def clear_caches
     Rails.cache.delete('top_10_rated_books_with_reviews') rescue nil
     Rails.cache.delete('top_50_sales_with_details') rescue nil
+  end
 
   def search_data
     {
