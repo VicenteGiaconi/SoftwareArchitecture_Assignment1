@@ -10,10 +10,10 @@ services:
       POSTGRES_PASSWORD: postgres
     ports:
       - "5432:5432"
-  # redis:
-  #   image: redis:6.2-alpine
-  #   ports:
-  #     - "6379:6379"
+  redis:
+    image: redis:6.2-alpine
+    ports:
+      - "6379:6379"
   web:
     build: .
     environment:
@@ -21,6 +21,7 @@ services:
           - CUSTOM_STORAGE_PATH=/myapp/custom_storage
           - REDIS_URL=redis://redis:6379/0
           - DB_HOST=db
+          - ELASTICSEARCH_URL=http://elasticsearch:9200
     command: rails s -p 3000 -b '0.0.0.0'
     volumes:
       - .:/myapp
@@ -28,7 +29,8 @@ services:
       - "3000:3000"
     depends_on:
       - db
-      #- redis
+      - redis
+      - elasticsearch
   varnish:
     image: varnish:7.3
     ports:

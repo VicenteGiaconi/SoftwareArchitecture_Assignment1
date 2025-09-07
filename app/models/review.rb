@@ -7,6 +7,7 @@ class Review < ApplicationRecord
 
   def clear_review_cache
     Rails.cache.delete('reviews_index') rescue nil
+  end
 
   def search_data
     {
