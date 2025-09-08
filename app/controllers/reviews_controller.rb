@@ -2,12 +2,18 @@ class ReviewsController < ApplicationController
     before_action :set_review, only: [:show, :edit, :update, :destroy]
 
     def index
-        cache_key = 'reviews_index'
-        all_reviews = Rails.cache.fetch(cache_key, expires_in: 1.hour) do
-            Review.all.to_a
+      if params[:q].present?
+        if Review.respond_to?(:search)
+          @reviews = Review.search(params[:q], page: params[:page], per_page: 15)
+        else
+          words = params[:q].split
+          query = words.map { |w| "review ILIKE ?" }.join(" OR ")
+          values = words.map { |w| "%#{w}%" }
+          @reviews = Review.where(query, *values).page(params[:page]).per(15)
         end
-        
-        @reviews = Kaminari.paginate_array(all_reviews).page(params[:page]).per(15)
+      else
+        @reviews = Review.page(params[:page]).per(15)
+      end
     end
 
     def show

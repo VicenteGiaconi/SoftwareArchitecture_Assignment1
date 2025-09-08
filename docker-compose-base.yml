@@ -10,14 +10,9 @@ services:
       POSTGRES_PASSWORD: postgres
     ports:
       - "5432:5432"
-  redis:
-    image: redis:6.2-alpine
-    ports:
-      - "6379:6379"
   web:
     build: .
     environment:
-          - REDIS_URL=redis://redis:6379/0
           - DB_HOST=db
     command: rails s -p 3000 -b '0.0.0.0'
     volumes:
@@ -26,7 +21,6 @@ services:
       - "3000:3000"
     depends_on:
       - db
-      - redis
 
 volumes:
   db_data:

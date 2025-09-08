@@ -10,13 +10,11 @@ services:
       POSTGRES_PASSWORD: postgres
     ports:
       - "5432:5432"
-  redis:
-    image: redis:6.2-alpine
-    ports:
-      - "6379:6379"
   web:
     build: .
     environment:
+          - SERVE_STATIC_ASSETS=${SERVE_STATIC_ASSETS:-true}
+          - CUSTOM_STORAGE_PATH=/myapp/custom_storage
           - REDIS_URL=redis://redis:6379/0
           - DB_HOST=db
     command: rails s -p 3000 -b '0.0.0.0'
@@ -26,7 +24,17 @@ services:
       - "3000:3000"
     depends_on:
       - db
-      - redis
+
+  varnish:
+    image: varnish:7.3
+    ports:
+      - "8080:80"
+    depends_on:
+      - web
+    volumes:
+      - ./varnish/default.vcl:/etc/varnish/default.vcl
+    environment:
+      - VARNISH_SIZE=256M
 
 volumes:
   db_data:

@@ -1,5 +1,7 @@
 class Review < ApplicationRecord
-  searchkick
+  if Rails.configuration.x.elasticsearch_available
+    searchkick
+  end
   belongs_to :book
   
 	after_save :clear_review_cache
