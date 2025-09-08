@@ -39,7 +39,7 @@ books = []
   books << Book.create(
     name: Faker::Book.title,
     summary: Faker::Lorem.paragraph(sentence_count: 5),
-    date_of_publication: Faker::Date.between(from: '1900-01-01', to: '2024-01-01'),
+    date_of_publication: Faker::Date.between(from: '1990-01-01', to: '2024-01-01'),
     number_of_sales: Faker::Number.between(from: 1000, to: 5000000),
     author: authors.sample 
   )
