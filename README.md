@@ -45,21 +45,43 @@ The filters implemented in the authors table is not very visible. By clicking th
 
 ## Docker environment
 
-### Only Database Container
+### Only Base Containers (App + Database)
 ```bash
-docker-compose run web rake db:setup
-docker-compose up
+docker compose -f docker-compose-base.yml up --build -d
+docker compose -f docker-compose-base.yml exec web rake db:setup
 ```
 
-### Database + Cache Container
+### Base + Cache Container
 ```bash
-docker-compose -f docker-compose-cache.yml up --build -d
-docker-compose -f docker-compose-cache.yml exec web rake db:setup
+docker compose -f docker-compose-cache.yml up --build -d
+docker compose -f docker-compose-cache.yml exec web rake db:setup
+```
+
+### Base + Reverse Proxy Container
+```bash
+docker compose -f docker-compose-proxy.yml up --build -d
+docker compose -f docker-compose-proxy.yml exec web rake db:setup
+```
+
+### Base + Search Engine Container
+```bash
+docker compose -f docker-compose-search.yml up --build -d
+docker compose -f docker-compose-search.yml exec web rake db:setup
+docker compose -f docker-compose-search.yml exec web bin/rails runner 'Book.reindex'
+docker compose -f docker-compose-search.yml exec web bin/rails runner 'Review.reindex'
+```
+
+### Everything at the same time
+```bash
+docker compose up --build -d
+docker compose exec web rake db:setup
+docker compose exec web bin/rails runner 'Book.reindex'
+docker compose exec web bin/rails runner 'Review.reindex'
 ```
 
 - Then search on your browser "http://localhost:3000/"
 - To take down the containers, execute:
 ```bash
-docker-compose down -v
+docker compose down -v
 ```
 
